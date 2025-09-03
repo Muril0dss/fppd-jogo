@@ -4,7 +4,10 @@ package main
 import (
 	"bufio"
 	"os"
+	"time"
 )
+
+//importando para dar timesleep
 
 // Elemento representa qualquer objeto do mapa (parede, personagem, vegetação, etc)
 type Elemento struct {
@@ -32,6 +35,11 @@ var (
 	TelefoneDesligado = Elemento{'☏', CorAmarelo, CorPadrao, false}
 	TelefoneLigado    = Elemento{'☎', CorAmarelo, CorPadrao, false}
 )
+
+func telefone(y, x int, jogo *Jogo) { //criando a go routine nao esta sendo usado pois botei no lugar que queria o telefone
+	time.Sleep(2 * time.Second)
+	jogo.Mapa[9][15] = TelefoneLigado
+}
 
 // Cria e retorna uma nova instância do jogo
 func jogoNovo() Jogo {
@@ -67,6 +75,7 @@ func jogoCarregarMapa(nome string, jogo *Jogo) error {
 
 			case TelefoneDesligado.simbolo:
 				e = TelefoneDesligado
+				go telefone(y, x, jogo)
 			}
 			linhaElems = append(linhaElems, e)
 		}

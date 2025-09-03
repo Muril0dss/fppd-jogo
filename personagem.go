@@ -20,29 +20,8 @@ func personagemMover(tecla rune, jogo *Jogo) {
 	nx, ny := jogo.PosX+dx, jogo.PosY+dy
 	// Verifica se o movimento é permitido e realiza a movimentação
 	if jogoPodeMoverPara(jogo, nx, ny) {
-		// cheque pelo SÍMBOLO, não pelo struct inteiro
-		ativando := (jogo.Mapa[ny][nx].simbolo == TelefoneDesligado.simbolo)
-
-		if ativando {
-			// dispare a rotina independente
-			go func(x, y int) {
-				// troca PERMANENTE do tile no mapa
-				jogo.Mapa[y][x] = TelefoneLigado
-				// mensagem independente da lógica principal
-				jogo.StatusMsg = "Você Recebeu um chamado! Uma porta foi aberta."
-			}(nx, ny)
-		}
-
-		// agora faça a movimentação
 		jogoMoverElemento(jogo, jogo.PosX, jogo.PosY, dx, dy)
 		jogo.PosX, jogo.PosY = nx, ny
-
-		if ativando {
-			// MUITO IMPORTANTE:
-			// garanta que "o chão sob o personagem" (buffer) já seja o estado ligado.
-			// Assim, quando você sair dessa célula, ela mostrará ★ (ligado), não ✦.
-			jogo.UltimoVisitado = TelefoneLigado
-		}
 	}
 }
 
